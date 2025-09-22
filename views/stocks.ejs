@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="styles.css">
+    <!--Semantic-UI CSS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <title>Add New Stock</title>
+  </head>
+  <body>
+     <!--Vertical Navbar-->
+  <div class="vertical-nav bg-white" id="sidebar">
+    <div class="py-4 px-3 mb-4" style="background: linear-gradient(to top, #0066eb 0%, #ff8ab3 68%);">
+      <div class="media d-flex align-items-center"><img src="admin.svg" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+        &emsp;<div class="media-body">
+          <h4 class="m-0"><p class="text-white"><shop-name></h4>
+          <p class="font-weight-light text-white mb-0">(Admin)</p>
+        </div>
+      </div>
+    </div>
+    <form action="/logout" method="POST">
+      <center><button type="submit" class="btn btn-danger" ><p class="text-white">Log Out</p></button></center>
+    </form>
+    <h5 class="ui horizontal divider header text-primary">
+      MAIN
+    </h5>
+  
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="/" class="nav-link text-dark font-italic">
+                  <i class="home icon"></i>
+                  Dashboard
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/billing" class="nav-link text-dark font-italic">
+          <i class="rupee sign icon"></i>
+                  Bill
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/orders" class="nav-link text-dark font-italic">
+          <i class="eye icon"></i>
+                  View Orders
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/viewstocks" class="nav-link text-dark font-italic">
+          <i class="tags icon"></i>
+                  View Stocks
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/stocks" class="nav-link text-dark font-italic" style="background: linear-gradient(to right, #0066eb 0%, #ff8ab3 68%);">
+          <p class="text-white"><i class="plus circle icon"></i>
+                  Add Stock
+                  </p>
+              </a>
+      </li>
+    </ul>
+  
+    <h5 class="ui horizontal divider header text-primary">
+      CUSTOMIZE
+    </h5>
+  
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="/brands" class="nav-link text-dark font-italic">
+          <i class="yelp icon"></i>
+                  Brand
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/categories" class="nav-link text-dark font-italic">
+          <i class="bookmark icon"></i>
+                  Category
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/sizes" class="nav-link text-dark font-italic">
+          <i class="check square icon"></i>
+                  Size
+              </a>
+      </li>
+    </ul>
+
+    <h5 class="ui horizontal divider header text-primary">
+      FILTERS
+    </h5>
+  
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="/sales_filter" class="nav-link text-dark font-italic">
+          <i class="yelp icon"></i>
+                  Sales
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/stock_filter" class="nav-link text-dark font-italic">
+          <i class="bookmark icon"></i>
+                  Stock
+              </a>
+      </li>
+    </ul>
+  </div>
+  <!-- End vertical navbar -->
+  
+     <!-- Page content holder -->
+  <div class="page-content p-5" id="content" style="background: linear-gradient(to right, #e9edf1 47%, #ff8ab3 100%);">
+    <!-- Toggle button -->
+    <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="align justify icon"></i><small class="text-uppercase font-weight-bold">Menu</small></button>
+  
+    <!-- Page content -->
+    
+    <h1>Add New Stock</h1>
+    <br>
+    <center><img class="ui medium rounded image" src="addstock.svg"></center>
+    <br>
+    <center><span class="btn btn-lg btn-primary btn_row_add_below_end">Add New Item <i class="plus circle icon"></i></span></center>
+    <br>
+    <br>
+    <div class="ui fluid container">
+    <form action="/submitstock" method="POST">
+    <table class="ui inverted pink celled table tbl_code_with_mark" id="myTable">
+      <thead>
+        <tr style="background: linear-gradient(to left, #0066eb 0%, #ff8ab3 68%);">
+          <th>Item No.</th>
+          <th>Item ID</th>
+          <th>Item Name</th>
+          <th>Category</th>
+          <th>Brand</th>
+          <th>Size</th>
+          <th>Amount</th>
+          <th>Image URL</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        
+        <tr>
+          <td class="table-info"><center><input type="text" id="number1" value=1 name="number1" style="border:0;outline:0" size="4"/></center></td>
+          <td class="table-danger">
+            <div class="form-floating">
+            <input type="text" class="form-control" id="itemid1" name="itemid1" required>
+            <label for="floatingInput">Item ID</label>
+            </div>
+        </td>
+          <td class="table-primary">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="itemname1" name="itemname1" required>
+              <label for="floatingInput">Item Name</label>
+          </div>
+          </td>
+          <td class="table-warning">
+            <div class="form-floating">
+              <select class="form-select" aria-label="Default select example" name="category1" id="category1" required> 
+                <% category.forEach(function(order){ %>
+                  <option value="<%= order.Category %>"><%= order.Category %></option>
+                <% }); %>
+              </select>
+                <label for="floatingInput">Category</label>
+            </div>
+          </td>
+          <td class="table-warning">
+            <div class="form-floating">
+              <select class="form-select" aria-label="Default select example" name="brand1" id="brand1" required>
+                <% brand.forEach(function(order){ %>
+                  <option value="<%= order.Brand %>"><%= order.Brand %></option>
+                <% }); %>
+              </select>
+                <label for="floatingInput">Brand</label>
+            </div>
+          </td>
+          <td class="table-warning">
+            <div class="form-floating">
+              <select class="form-select" aria-label="Default select example" name="size1" id="size1" required>
+                <% size.forEach(function(order){ %>
+                  <option value="<%= order.Size %>"><%= order.Size %></option>
+                <% }); %>
+              </select>
+              <label for="floatingInput">Size</label>
+            </div>
+          </td>
+          <td class="table-success">
+            <div class="form-floating">
+              <input type="number" class="form-control" name="amount1" placeholder="Enter Amount" value=0 id="amount1" required>
+              <label for="floatingInput">Amount</label>
+          </div>
+          </td>
+          <td class="table-success">
+            <div class="form-floating">
+              <input type="url" class="form-control" name="imageurl1" placeholder="Enter Image URL" id="imageurl1" required>
+              <label for="floatingInput">Image URL</label>
+          </div>
+          </td>
+        </tr>
+        
+      </tbody>
+      
+    </table>
+    
+    <center><input type="submit" value="Submit" class="btn btn-primary"></center>
+    </form>
+    </div>
+
+    </div> 
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0pP2ygj4Pq6cbe4D5hXBdQj27Vgl1l69u6kFVuGtm5AAfV1z" crossorigin="anonymous"></script>
+    
+    <script>
+      $(document).on('click', ".btn_row_add_below_end", function(e) {
+        var tableBody = $(document).find('.tbl_code_with_mark').find("tbody");
+        var trLast = tableBody.find("tr:last");
+        var trNew = trLast.clone();
+    
+        trLast.after(trNew);
+        var flag1 = trNew.find("input").attr('id').replace(/\d+/g, '');
+        var inputs = document.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].id = (inputs[i].id).replace(/\d+/g, '')
+          inputs[i].name = (inputs[i].name).replace(/\d+/g, '')
+          inputs[i].id = inputs[i].id + (flag1).toString();
+          inputs[i].name = inputs[i].name + (flag1).toString();
+        }
+      });
+    </script>
+  </body>
+</html>

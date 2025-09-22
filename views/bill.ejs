@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="styles.css">
+    <!--Semantic-UI CSS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="https://unpkg.com/easyinvoice/dist/easyinvoice.min.js"></script>
+    <title>Bill</title>
+  </head>
+  <body>
+    <!--Vertical Navbar-->
+  <div class="vertical-nav bg-white" id="sidebar">
+    <div class="py-4 px-3 mb-4" style="background: linear-gradient(to top, #0066eb 0%, #ff8ab3 68%);">
+      <div class="media d-flex align-items-center"><img src="admin.svg" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+        &emsp;<div class="media-body">
+          <h4 class="m-0"><p class="text-white"><shop-name></h4>
+            <p class="font-weight-light text-white mb-0">(Admin)</p>
+        </div>
+      </div>
+    </div>
+    <form action="/logout" method="POST">
+      <center><button type="submit" class="btn btn-danger" ><p class="text-white">Log Out</p></button></center>
+    </form>
+    <h5 class="ui horizontal divider header text-primary">
+      MAIN
+    </h5>
+  
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="/" class="nav-link text-dark font-italic">
+                  <i class="home icon"></i>
+                  Dashboard
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/billing" class="nav-link text-dark font-italic" style="background: linear-gradient(to right, #0066eb 0%, #ff8ab3 68%);">
+          <p class="text-white"><i class="money bill alternate icon"></i>
+                  Bill
+                  </p>
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/orders" class="nav-link text-dark font-italic">
+          <i class="eye icon"></i>
+                  View Orders
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/viewstocks" class="nav-link text-dark font-italic">
+          <i class="tags icon"></i>
+                  View Stocks
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/stocks" class="nav-link text-dark font-italic">
+          <i class="plus circle icon"></i>
+                  Add Stock
+              </a>
+      </li>
+    </ul>
+  
+    <h5 class="ui horizontal divider header text-primary">
+      CUSTOMIZE
+    </h5>
+  
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="/brands" class="nav-link text-dark font-italic">
+          <i class="yelp icon"></i>
+                  Brand
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/categories" class="nav-link text-dark font-italic">
+          <i class="bookmark icon"></i>
+                  Category
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/sizes" class="nav-link text-dark font-italic">
+          <i class="check square icon"></i>
+                  Size
+              </a>
+      </li>
+    </ul>
+
+    <h5 class="ui horizontal divider header text-primary">
+      FILTERS
+    </h5>
+  
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="/sales_filter" class="nav-link text-dark font-italic">
+          <i class="yelp icon"></i>
+                  Sales
+              </a>
+      </li>
+      <li class="nav-item">
+        <a href="/stock_filter" class="nav-link text-dark font-italic">
+          <i class="bookmark icon"></i>
+                  Stock
+              </a>
+      </li>
+    </ul>
+  </div>
+  <!-- End vertical navbar -->
+  
+     <!-- Page content holder -->
+  <div class="page-content p-5" id="content" style="background: linear-gradient(to right, #e9edf1 47%, #ff8ab3 100%);">
+    <!-- Toggle button -->
+    <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="align justify icon"></i><small class="text-uppercase font-weight-bold">Menu</small></button>
+  
+    <!-- Page content -->
+    <h1>Bill</h1>
+    <center><img class="ui small rounded image" src="creditcard.svg"></center>
+    <br>
+    <center><span class="btn btn-lg btn-primary btn_row_add_below_end">Add New Item <i class="shopping cart icon"></i></span></center>
+    <br>
+    <div class="ui fluid container">
+    <form action="/submitbill" method="POST">
+    <table class="ui inverted pink celled table celled tbl_code_with_mark" id="myTable">
+      <thead>
+        <tr style="background: linear-gradient(to left, #0066eb 0%, #ff8ab3 68%);">
+          <th>Item No.</th>
+          <th>Item Name</th>
+          <th style="display:none;">Item ID</th>
+          <th>Category</th>
+          <th>Brand</th>
+          <th>Size</th>
+          <th>Quantity</th>
+          <th>Amount</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="table-info"><center><input type="text" id="number1" value="1" name="number1" style="border:0;outline:0" size="4" disabled/></center></td>
+          <td class="table-danger">
+            <div class="form-floating">
+              <input list="itemnames" class="form-control" id="itemname1" name="itemname1" onchange="fetchitem(this)" size="4" required>
+              <label for="floatingInput">Name</label>
+              <datalist id="itemnames">
+                <% all_stocks.forEach(function(stock){ %>
+                  <option value="<%= stock.ItemName %>">
+                <% }); %>
+              </datalist>
+            </div>
+          </td>
+          <td class="table-primary" style="display:none;">
+            <!-- This is the hidden field for ItemID that gets populated by JavaScript -->
+            <input type="hidden" id="itemid1" name="itemid1">
+          </td>
+          <td class="table-primary">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="category1" name="category1" size="4" required disabled>
+              <label for="floatingInput">Category</label>
+            </div>
+          </td>
+          <td class="table-warning">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="brand1" name="brand1" size="4" required disabled>
+              <label for="floatingInput">Brand</label>
+            </div>
+          </td>
+          <td class="table-warning">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="size1" name="size1" size="4" required disabled>
+              <label for="floatingInput">Size</label>
+            </div>
+          </td>
+          <td class="table-warning">
+            <div class="form-floating">
+              <input type="number" class="form-control" id="quantity1" name="quantity1" value="1" min="1" required oninput="updateTotal()">
+              <label for="floatingInput">Quantity</label>
+            </div>
+          </td>
+          <td class="table-success"> 
+            <div class="form-floating">
+              <input type="number" class="form-control" id="amount1" name="amount1" value="0" min="0" required disabled>
+              <label for="floatingInput">Amount ৳</label>
+            </div>
+          </td>
+          <td class="table-primary">
+            <button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <center><button type="submit" class="ui teal submit button">Submit</button>
+      <button class="ui green submit button" type="button" onclick="downloadInvoice()">Download Bill</button></center>
+    </form>
+    
+    <h4 class="ui horizontal divider header">
+      <i class="money bill alternate icon"></i>
+      TOTAL CART VALUE
+    </h4>
+    <br>
+    <center>
+      <div class="card text-dark" style="width: 12rem;background: linear-gradient(to left, #0066eb 0%, #ff8ab3 68%);">
+        <div class="card-body">
+          <div class="form-floating">
+            <input type="number" class="form-control" id="total" name="total" value="0" required disabled>
+            <label for="floatingInput">Total Amount</label>
+          </div>
+        </div>
+      </div>
+    </center> 
+  </div>
+</div>
+    
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<!-- Semnatic-UI Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+
+<script>
+  let rowCounter = 1;
+  $(document).ready(function($) {
+    $(document).on('click', ".btn_row_add_below_end", function(e) {
+      rowCounter++;
+      var tableBody = $(document).find('.tbl_code_with_mark').find("tbody");
+      var trLast = tableBody.find("tr:last");
+      var trNew = trLast.clone();
+      trNew.find('input, select').each(function() {
+        var oldId = $(this).attr('id');
+        var oldName = $(this).attr('name');
+        if (oldId) {
+          $(this).attr('id', oldId.replace(/\d+/, rowCounter));
+        }
+        if (oldName) {
+          $(this).attr('name', oldName.replace(/\d+/, rowCounter));
+        }
+        $(this).val('');
+      });
+      trNew.find('td:first-child input').val(rowCounter);
+      trLast.after(trNew);
+      updateTotal(); // Call updateTotal after adding a new row
+    });
+  });
+
+  function removeItem(button) {
+    const table = document.getElementById('myTable');
+    const row = button.parentNode.parentNode;
+    if (table.rows.length > 2) {
+      row.parentNode.removeChild(row);
+    } else {
+      const inputs = row.getElementsByTagName('input');
+      for (const input of inputs) {
+        if (input.id !== 'number1' && input.id !== 'total') {
+          input.value = '';
+        }
+      }
+    }
+    updateTotal();
+  }
+
+  function fetchitem(inputElement) {
+    const row = inputElement.closest('tr');
+    const itemName = inputElement.value;
+    const rowId = row.querySelector('[name^="number"]').value;
+
+    if (!itemName) {
+        const rowInputs = row.querySelectorAll('input');
+        rowInputs.forEach(input => {
+            if (input.name !== `itemname${rowId}`) {
+                input.value = '';
+            }
+        });
+        updateTotal();
+        return;
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/fetchitem",
+      data: { "itemname": itemName },
+      success: function(data) {
+        if (data.status === 200 && data.rows.length > 0) {
+          const item = data.rows[0];
+          row.querySelector(`[name="category${rowId}"]`).value = item.Category;
+          row.querySelector(`[name="brand${rowId}"]`).value = item.Brand;
+          row.querySelector(`[name="size${rowId}"]`).value = item.Size;
+          row.querySelector(`[name="quantity${rowId}"]`).value = 1;
+          row.querySelector(`[name="amount${rowId}"]`).value = item.Amount;
+          // This is the key fix: correctly setting the value of the hidden itemid input
+          row.querySelector(`[name="itemid${rowId}"]`).value = item.ItemID;
+          updateTotal();
+        } else {
+          const rowInputs = row.querySelectorAll('input');
+          rowInputs.forEach(input => {
+            if (input.name !== `itemname${rowId}`) {
+              input.value = '';
+            }
+          });
+          updateTotal();
+        }
+      },
+      error: function() {
+        console.error("Error fetching item data.");
+      }
+    });
+  }
+
+  function updateTotal() {
+    let totalAmount = 0;
+    const rows = document.getElementById('myTable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    for (let i = 0; i < rows.length; i++) {
+      const amountElement = rows[i].querySelector('[name^="amount"]');
+      const quantityElement = rows[i].querySelector('[name^="quantity"]');
+      const amount = parseInt(amountElement ? amountElement.value : '0') || 0;
+      const quantity = parseInt(quantityElement ? quantityElement.value : '0') || 0;
+      totalAmount += amount * quantity;
+    }
+    document.getElementById('total').value = totalAmount;
+  }
+</script>

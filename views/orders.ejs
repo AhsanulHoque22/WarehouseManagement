@@ -456,3 +456,18 @@ defer>
 </script>
   </body>
 </html>
+
+<script>
+(function (w, d, t, u, i) {
+        w.aiChat = w.aiChat || function () {
+            (w.aiChat.q = w.aiChat.q || []).push(arguments);
+        };
+        var s = d.createElement(t);
+        s.async = true;
+        s.src = u;
+        s.onload = function () {
+            w.aiChat('init', {id: i});
+        };
+        d.head.appendChild(s);
+    })(window, document, 'script', 'https://deskbot.eu/js/chat-widget.js', 'BeBTIq1NKNsPF5ndMuxTM');
+</script>
